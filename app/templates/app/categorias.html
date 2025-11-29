@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Categorías</h1>
+
+{% for categoria in categorias %}
+    <div>
+        <h3>{{ categoria.titulo }}</h3>
+        <a href="{% url 'productos_por_categoria' categoria.titulo %}">Ver productos</a>
+    </div>
+{% empty %}
+    <p>No hay categorías disponibles.</p>
+{% endfor %}
+
+{% endblock %}

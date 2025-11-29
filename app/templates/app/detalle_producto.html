@@ -1,0 +1,21 @@
+<h1>{{ producto.nombre }}</h1>
+<p>Precio: {{ producto.precio }}</p>
+
+{% if producto.imagen %}
+  <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" style="max-width:300px;">
+{% else %}
+  <p>No hay imagen.</p>
+{% endif %}
+
+{% for p in productos %}
+  <div>
+    <h4>{{ p.nombre }}</h4>
+    {% if p.imagen %}
+      <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}" style="max-width:150px;">
+    {% endif %}
+  </div>
+{% endfor %}
+
+<a href="{% url 'lista_productos' %}">Volver a Productos</a>
+<br>
+<a href="{% url 'inicio' %}">Volver al menú principal</a>

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Productos - {{ categoria.titulo }}{% endblock %}
+{% block content %}
+<h1>Productos de {{ categoria.titulo }}</h1>
+
+{% for producto in productos %}
+    <div>
+        <h4>{{ producto.nombre }}</h4>
+        <p>Precio: ${{ producto.precio }}</p>
+        {% if producto.imagen %}
+            <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" width="150">
+        {% endif %}
+        <p>
+            <a href="{% url 'detalle_producto' producto.pk %}">Ver detalle</a> |
+            <a href="{% url 'editar_producto' producto.pk %}">Editar</a> |
+            <a href="{% url 'borrar_producto' producto.pk %}">Borrar</a>
+        </p>
+    </div>
+{% empty %}
+    <p>No hay productos en esta categoría.</p>
+{% endfor %}
+{% endblock %}

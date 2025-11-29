@@ -1,0 +1,20 @@
+
+
+{% block back_button %}
+{% endblock %}
+{% extends 'base.html' %}
+
+{% block title %}{{ titulo }} Producto{% endblock %}
+
+{% block content %}
+<h2>{{ titulo }} Producto</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar</button>
+</form>
+<a href="{% url 'lista_productos' %}">Volver a Productos</a>
+<br>
+<a href="{% url 'inicio' %}">Volver al menú principal</a>
+
+{% endblock %}

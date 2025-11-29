@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<div class="container mt-4">
+    <h1 class="mb-4">Menú Principal</h1>
+
+    <div class="list-group">
+        <a href="{% url 'categorias' %}" class="list-group-item list-group-item-action">
+            Ver categorías
+        </a>
+
+        <a href="{% url 'crear_categoria' %}" class="list-group-item list-group-item-action">
+            Crear categoría
+        </a>
+
+        <a href="{% url 'productos' %}" class="list-group-item list-group-item-action">
+            Ver productos
+        </a>
+
+        <a href="{% url 'crear_producto' %}" class="list-group-item list-group-item-action">
+            Crear producto
+        </a>
+    </div>
+</div>
+{% endblock %}

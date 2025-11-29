@@ -1,0 +1,29 @@
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <div>
+    {{ form.nombre.label_tag }}<br>
+    {{ form.nombre }}
+    {{ form.nombre.errors }}
+  </div>
+  <div>
+    {{ form.precio.label_tag }}<br>
+    {{ form.precio }}
+    {{ form.precio.errors }}
+  </div>
+  <div>
+    {{ form.categoria.label_tag }}<br>
+    {{ form.categoria }}
+    {{ form.categoria.errors }}
+  </div>
+  <div>
+    {{ form.imagen.label_tag }}<br>
+    {{ form.imagen }}
+    {{ form.imagen.errors }}
+  </div>
+
+  <button type="submit">{% if editar %}Guardar cambios{% else %}Crear{% endif %}</button>
+</form>
+<a href="{% url 'lista_productos' %}">Volver a Productos</a>
+<br>
+<a href="{% url 'inicio' %}">Volver al menú principal</a>
