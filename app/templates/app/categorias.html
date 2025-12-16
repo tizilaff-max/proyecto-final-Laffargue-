@@ -6,7 +6,16 @@
 {% for categoria in categorias %}
     <div>
         <h3>{{ categoria.titulo }}</h3>
-        <a href="{% url 'productos_por_categoria' categoria.titulo %}">Ver productos</a>
+        <a href="{% url 'productos_por_categoria' categoria.pk %}">
+            Ver productos
+       </a>
+        <a href="{% url 'editar_categoria' categoria.pk %}">
+            Editar
+        </a>
+        <a href="{% url 'borrar_categoria' categoria.pk %}">
+    Borrar
+</a>
+
     </div>
 {% empty %}
     <p>No hay categorías disponibles.</p>

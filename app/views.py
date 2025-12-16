@@ -10,24 +10,17 @@ from .models import Catalogo, Producto
 from .forms import CatalogoForm, ProductoForm
 from django.contrib.auth import login
 from django.db.models import Q
-
+from django.contrib.auth import logout
 
 
 def lista_productos(request):
     query = request.GET.get('q', '')
     if query:
-        productos = Producto.objects.filter(
-            Q(nombre__icontains=query) |
-            Q(categoria__nombre__icontains=query) |
-            Q(color__icontains=query)
-        )
+        productos = Producto.objects.filter(Q(nombre__icontains=query) | Q(categoria__nombre__icontains=query) | Q(color__icontains=query))
     else:
         productos = Producto.objects.all()
 
-    return render(request, 'app/lista_productos.html', {
-        'productos': productos,
-        'query': query
-    })
+    return render(request, 'app/lista_productos.html', {'productos': productos,'query': query})
 
 
 def iniciar_sesion(request):
@@ -49,14 +42,9 @@ def inicio(request):
 
     for categoria in categorias:
         productos = Producto.objects.filter(categoria=categoria)[:3]
-        categorias_con_productos.append({
-            'categoria': categoria,
-            'productos': productos
-        })
+        categorias_con_productos.append({'categoria': categoria,'productos': productos})
 
-    return render(request, 'app/inicio.html', {
-        'categorias_con_productos': categorias_con_productos
-    })
+    return render(request, 'app/inicio.html', {'categorias_con_productos': categorias_con_productos})
 
 
 def categorias(request):
@@ -66,10 +54,10 @@ def categorias(request):
 from django.shortcuts import get_object_or_404, render
 from .models import Catalogo, Producto
 
-def productos_por_categoria(request, nombre_categoria):
-    categoria = get_object_or_404(Catalogo, titulo=nombre_categoria)
+def productos_por_categoria(request, pk):
+    categoria = get_object_or_404(Catalogo, pk=pk)
     productos = Producto.objects.filter(categoria=categoria)
-    return render(request, 'app/productos_por_categoria.html', {'categoria': categoria, 'productos': productos})
+    return render(request,"app/productos_por_categoria.html",{"categoria": categoria,"productos": productos})
 
 
 @login_required(login_url="iniciar_sesion")
@@ -146,20 +134,44 @@ def crear_catalogo(request):
 
 
 @login_required(login_url="iniciar_sesion")
-def crear_producto(request, producto):
+def crear_producto(request):
     if request.method == "POST":
         form = ProductoForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect("lista_productos")
     else:
-        form = ProductoForm(request.POST, request.FILES, instance=producto)
+        form = ProductoForm()
+
     return render(request, "app/crear_producto.html", {"form": form})
 
+@login_required(login_url="iniciar_sesion")
+def editar_categoria(request, pk):
+    categoria = get_object_or_404(Catalogo, pk=pk)
+
+    if request.method == "POST":
+        form = CatalogoForm(request.POST, request.FILES, instance=categoria)
+        if form.is_valid():
+            form.save()
+            return redirect("categorias")
+    else:
+        form = CatalogoForm(instance=categoria)
+
+    return render(request,"app/crear_catalogo.html",{"form": form, "editar": True})
+
+@login_required(login_url="iniciar_sesion")
+def borrar_categoria(request, pk):
+    categoria = get_object_or_404(Catalogo, pk=pk)
+
+    if request.method == "POST":
+        categoria.delete()
+        return redirect("categorias")
+
+    return render(request,"app/borrar_categoria.html",{"categoria": categoria})
 
 def about(request):
     return render(request, 'app/about.html')
 
-def cerrar_sesion(request, logout):
+def cerrar_sesion(request):
     logout(request)
     return redirect("inicio")
